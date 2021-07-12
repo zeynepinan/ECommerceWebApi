@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.DTOs;
@@ -17,9 +18,16 @@ namespace Business.Concrete
             _productDal = productDal;
         }
 
-        public void Add(Product product)
+        public IResult Add(Product product)
         {
+
+            if (product.ProductName.Length<2)
+            {
+                return new ErrorResult("Ürün ismi en az 2 karakter olmalıdır.");
+            }
+            //iki parametreli constructor çalışacak.
             _productDal.Add(product);
+            return new Result(true,"Ürün eklendi");
         }
 
         public List<Product> GetAll()
